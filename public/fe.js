@@ -5,24 +5,38 @@ let name = prompt('what is your username?');
 
 socket.on('connect', () => {
   // 2. on connect, emit your name to your server
+  socket.emit('name', { name });
 });
 
 let users = {};
 
 // 3. Bind to initial data to get all users and messages
 // call renderUsers(users), and renderMessages(messages) to load UI
+socket.on('data', (data) => {
+  users = data.users;
+  renderUsers(data.users);
+  renderMessages(data.messages);
+});
 
 // 4. Bind to event (when new user joins), then renderUsers(users);
+socket.on('users', (data) => {
+  users = data;
+  renderUsers(data);
+});
 
 // 5. Bind to event (when new message is received ), then call createMessage({name, message});
+socket.on('message', ({userId, message}) => {
+  createMessage({ name: users[userId].name, message });
+});
 
 const submit = (v) => {
   if(!name) return;
   // 6. submit is called when user hits enter. Emit an event to server with the message
+  socket.emit('message', {message: v});
   createMessage({name, message: v});
 };
 
-/* 
+/*
  * HELPER functions for rendering UI below
 */
 const chatContainer = document.getElementsByClassName('chatContainer')[0];
