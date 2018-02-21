@@ -1,27 +1,30 @@
-const socket = io.connect('http://songjs.llip.life/');
+// 1. connect to your socket
+const socket = io.connect();
 
 let name = prompt('what is your username?');
+
 socket.on('connect', () => {
-  socket.emit('presence', { name });
+  // 2. on connect, emit your name to your server
 });
 
 let users = {};
-socket.on('data', (data) => {
-  users = data.users;
-  renderUsers(data.users);
-  renderMessages(data.messages);
-});
 
-socket.on('users', (data) => {
-  users = data;
-  renderUsers(data);
-});
+// 3. Bind to initial data to get all users and messages
+// call renderUsers(users), and renderMessages(messages) to load UI
 
-socket.on('message', ({userId, message}) => {
-  if(!users[userId]) return;
-  createMessage({name: users[userId].name, message});
-});
+// 4. Bind to event (when new user joins), then renderUsers(users);
 
+// 5. Bind to event (when new message is received ), then call createMessage({name, message});
+
+const submit = (v) => {
+  if(!name) return;
+  // 6. submit is called when user hits enter. Emit an event to server with the message
+  createMessage({name, message: v});
+};
+
+/* 
+ * HELPER functions for rendering UI below
+*/
 const chatContainer = document.getElementsByClassName('chatContainer')[0];
 
 const renderUsers = (users) => {
@@ -31,10 +34,6 @@ const renderUsers = (users) => {
   }, '');
 };
 
-
-/* 
- * HELPER functions for rendering UI
-*/
 const renderMessages = (messages) => {
   chatContainer.innerHTML = '';
   messages.forEach( ({userId, message}) => {
@@ -53,12 +52,6 @@ const createMessage = ({name, message}) => {
   `;
   chatContainer.appendChild(ct);
   chats.scrollTop = chats.scrollHeight;
-};
-
-const submit = (v) => {
-  if(!name) return;
-  socket.emit('message', { message: v });
-  createMessage({name, message: v});
 };
 
 input.focus();

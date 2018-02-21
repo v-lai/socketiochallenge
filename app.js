@@ -18,23 +18,15 @@ app.get('/', (req, res) => {
 const users = {};
 const messages = [];
 
+// when a new connection is received
 io.on('connection', (socket) => {
   let userId = socket.id;
-  socket.on('presence', (data) => {
-    if(!data.name) return;
-    users[socket.id] = data;
-    socket.emit('data', {users, messages});
-    socket.broadcast.emit('users', users);
-  });
-  socket.on('message', (d) => {
-    const message = {userId, message: d.message};
-    messages.push(message);
-    socket.broadcast.emit('message', message );
-  });
-  socket.on('disconnect', () => {
-    delete users[userId];
-    io.emit('users', users);
-  });
+  // step 1. Listen to event where user emits her name, update users object
+  // step 2. After updating users object, broadcast event to update everyone else with new user list
+  // step 3. After updating users object, emit to new user with userList and message list
+  // step 4. Listen to event when user emits new message. Broadcast to everyone else with new message
+  // step 5. Listen to event when user disconnects. Delete user and Broadcast new user list to everyone
 });
 
+// replace with your server port
 server.listen(3613);
