@@ -1,0 +1,70 @@
+.chatContainer {
+  margin: 10px;
+}
+
+body {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+#userListContainer {
+  height: 100%;
+  left: 0;
+  background-color: #eef;
+  width: 250px;
+}
+
+#chatListContainer {
+  background-color: #fef;
+  left: 250px;
+}
+
+#mainContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#chatInput {
+  position: absolute;
+  bottom: 10px;
+  height: 50px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#chats {
+  width: 100%;
+  position: absolute;
+  bottom: 60px;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(100,255,255, 1);
+  overflow: auto;
+}
+
+#input {
+  width: 100%;
+  height: 30px;
+  bottom: 0;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.chat {
+  margin-top: 30px;
+}
+
+.user {
+  font-weight: 900;
+}
